@@ -1,0 +1,18 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: filestore-storage-class
+  # this name needs to be used in the filestore-pvc yaml file.
+provisioner: filestore.csi.storage.gke.io # File Store CSI Driver
+# this is the provisioner when running  kubectl get storageclass or
+# kubectl describe storageclass standard-rwx
+# Reclaim policy is delete by default and we don't need to state it
+
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+parameters:
+  tier: standard # Allowed values standard, premium, or enterprise
+  network: default # The network parameter can be used when provisioning Filestore instances on non-default VPCs. Non-default VPCs require special firewall rules to be set up.
+  # default VPC this is optional. This is only needed if non-default VPC
+  # would also need to configure firewall rules to non-default to NFS fileshare.
+  # with default VPC do not need firewall rules.
